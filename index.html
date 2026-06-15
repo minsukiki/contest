@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>매출 컨테스트</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#F0F4FA;color:#222}
+#nav1{background:#1B2F5E;display:flex;align-items:center;padding:0 16px;position:sticky;top:0;z-index:1000}
+#nav1 .logo{color:#fff;font-size:15px;font-weight:700;padding:13px 16px 13px 0;border-right:1px solid rgba(255,255,255,.2);margin-right:8px;white-space:nowrap}
+.nm{display:inline-block;padding:13px 14px;font-size:13px;font-weight:700;color:rgba(255,255,255,.5);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+.nm:hover{color:#fff}
+.nm.on{color:#fff;border-bottom-color:#60A5FA}
+#nav2{background:#0f1e3d;padding:2px 12px 0;display:flex;flex-wrap:wrap}
+.nb{display:inline-block;padding:8px 12px;font-size:12px;font-weight:600;color:rgba(255,255,255,.45);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.nb:hover{color:#fff}
+.nb.on{color:#fff;border-bottom-color:#60A5FA}
+.pg{display:none;max-width:1100px;margin:0 auto;padding:24px 14px 60px}
+.pg.on{display:block}
+.card{background:#fff;border:1px solid #dde3ea;border-radius:10px;margin-bottom:18px}
+.ch{padding:13px 18px;border-bottom:1px solid #dde3ea;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.ch h2{font-size:14px;font-weight:700;color:#1B2F5E}
+.og{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px}
+.ob{background:#fff;border:1px solid #dde3ea;border-radius:8px;padding:12px 14px}
+.ol{font-size:11px;color:#888;font-weight:700;text-transform:uppercase;margin-bottom:4px}
+.ov{font-size:14px;font-weight:700;color:#1B2F5E;line-height:1.5}
+.gg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.gc{border-radius:10px;padding:14px;border:1.5px solid}
+.gc.A{border-color:#7B1FA2;background:#F3E5F5}
+.gc.B{border-color:#1565C0;background:#E3F0FF}
+.gc.C{border-color:#2E7D32;background:#E8F5E9}
+.gn{font-size:16px;font-weight:900;margin-bottom:2px}
+.gc.A .gn{color:#7B1FA2}.gc.B .gn{color:#1565C0}.gc.C .gn{color:#2E7D32}
+.gd{font-size:12px;color:#888;margin-bottom:6px}
+.pl div{font-size:12px;line-height:2}
+.pl span{display:inline-block;width:52px;font-weight:700}
+table{width:100%;border-collapse:collapse}
+th{background:#1B2F5E;color:#fff;font-size:12px;font-weight:700;padding:9px 10px;text-align:center;white-space:nowrap}
+tr{border-bottom:1px solid #eee}
+tr:hover{background:#f5f8ff}
+td{padding:8px 10px;font-size:13px;text-align:center;vertical-align:middle}
+.rn{font-weight:900;font-size:13px;color:#1B2F5E}
+.rn.r1{color:#B8860B}.rn.r2{color:#888}.rn.r3{color:#A0522D}
+.gb{display:inline-block;padding:1px 7px;border-radius:10px;font-size:11px;font-weight:700}
+.gb.A{background:#F3E5F5;color:#7B1FA2}.gb.B{background:#E3F0FF;color:#1565C0}.gb.C{background:#E8F5E9;color:#2E7D32}
+.rb{display:inline-block;padding:1px 7px;border-radius:10px;font-size:11px;font-weight:700}
+.rb1{background:#FFF3CD;color:#856404}.rb2{background:#D1ECF1;color:#0C5460}
+.bch{display:inline-block;padding:1px 7px;border-radius:10px;font-size:12px;font-weight:700}
+.bup{color:#1565C0;background:#E3F0FF}.bdn{color:#C62828;background:#FFEBEE}
+.beq{color:#888;background:#f0f0f0}.bnw{color:#2E7D32;background:#E8F5E9;font-size:10px}
+.pz{font-weight:700;color:#B8860B}
+.frow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.rt{padding:5px 13px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid #ccc;background:#f4f6fa;color:#666;font-family:inherit}
+.rt.on{background:#1B2F5E;color:#fff;border-color:#1B2F5E}
+.gt{padding:5px 13px;border-radius:14px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid #ccc;background:#fff;color:#666;font-family:inherit}
+.gt.on{background:#1B2F5E;border-color:#1B2F5E;color:#fff}
+.gt.onA{background:#F3E5F5;border-color:#7B1FA2;color:#7B1FA2}
+.gt.onB{background:#E3F0FF;border-color:#1565C0;color:#1565C0}
+.gt.onC{background:#E8F5E9;border-color:#2E7D32;color:#2E7D32}
+.frow2{display:flex;gap:7px;flex-wrap:wrap;padding:14px 18px}
+.frow2 select,.frow2 input{height:38px;border:1.5px solid #dde3ea;border-radius:7px;padding:0 10px;font-size:13px;font-family:inherit;outline:none;background:#fff}
+.frow2 input{min-width:90px}
+.btn-add{height:38px;padding:0 18px;background:#1B2F5E;color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-add:hover{background:#1565C0}
+.se{width:100px;height:28px;border:1.5px solid #dde3ea;border-radius:5px;text-align:center;font-size:13px;font-family:inherit;outline:none}
+.ne{width:70px;height:28px;border:1.5px solid #dde3ea;border-radius:5px;padding:0 5px;font-size:12px;font-family:inherit;outline:none}
+.xbtn{background:none;border:none;cursor:pointer;color:#ccc;font-size:13px;padding:2px 5px}
+.xbtn:hover{color:#c00}
+
+.adm-btn{width:30px;height:30px;padding:0;background:#f5f5f5;border:1px solid #ddd;border-radius:6px;font-size:13px;cursor:pointer;color:#888;font-family:inherit;transition:all .15s}
+.adm-btn:hover{background:#1B2F5E;color:#fff;border-color:#1B2F5E}
+
+</style>
+</head>
+<body>
+
+<div id="nav1">
+<div class="logo">🏆 매출 컨테스트</div>
+<div class="nm on" id="nm-overview" onclick="gp('overview')">대회 개요</div>
+<div class="nm" id="nm-ranking" onclick="gp('ranking')">전체 순위</div>
+<div style="margin-left:auto;display:flex;align-items:center;gap:8px;padding-right:8px">
+  <span id="sync-status" style="font-size:11px;color:rgba(255,255,255,.7)"></span>
+  <button onclick="loadFromServer()" title="지금 새로고침" style="background:rgba(255,255,255,.15);border:none;color:#fff;padding:5px 10px;border-radius:5px;font-size:12px;cursor:pointer;font-family:inherit">🔄</button>
+</div>
+</div>
+<div id="nav2"><div class="nb" id="nb-강남" onclick="gp('강남')">강남</div>
+<div class="nb" id="nb-홍대" onclick="gp('홍대')">홍대</div>
+<div class="nb" id="nb-부산" onclick="gp('부산')">부산</div>
+<div class="nb" id="nb-부평" onclick="gp('부평')">부평</div>
+<div class="nb" id="nb-대구" onclick="gp('대구')">대구</div>
+<div class="nb" id="nb-대전" onclick="gp('대전')">대전</div>
+<div class="nb" id="nb-광주" onclick="gp('광주')">광주</div>
+<div class="nb" id="nb-수원" onclick="gp('수원')">수원</div>
+<div class="nb" id="nb-일산" onclick="gp('일산')">일산</div>
+<div class="nb" id="nb-구월" onclick="gp('구월')">구월</div>
+<div class="nb" id="nb-울산" onclick="gp('울산')">울산</div>
+<div class="nb" id="nb-노원" onclick="gp('노원')">노원</div>
+<div class="nb" id="nb-분당" onclick="gp('분당')">분당</div>
+<div class="nb" id="nb-종로" onclick="gp('종로')">종로</div>
+<div class="nb" id="nb-안산" onclick="gp('안산')">안산</div>
+<div class="nb" id="nb-안양" onclick="gp('안양')">안양</div>
+<div class="nb" id="nb-천안" onclick="gp('천안')">천안</div>
+<div class="nb" id="nb-청주" onclick="gp('청주')">청주</div>
+</div>
+
+<div class="pg on" id="pg-overview">
+<div class="og">
+<div class="ob"><div class="ol">대상</div><div class="ov">컴퓨터계열 경력급 이상<br><span style="font-size:12px;color:#888">최근 3개월 (3~5월) 기준</span></div></div>
+<div class="ob"><div class="ol">총 참가 인원</div><div class="ov">230명 예상<br><span style="font-size:12px;color:#888">A:45명 · B:70명 · C:115명</span></div></div>
+<div class="ob"><div class="ol">총 상여</div><div class="ov">1,100만원<br><span style="font-size:12px;color:#888">1차 550만 / 2차 550만</span></div></div>
+<div class="ob"><div class="ol">최소 지급 조건</div><div class="ov">없음</div></div>
+<div class="ob"><div class="ol">1차전</div><div class="ov">6월 12일 ~ 6월 30일<br><span style="font-size:12px;color:#888">(19일)</span></div></div>
+<div class="ob"><div class="ol">2차전</div><div class="ov">7월 1일 ~ 7월 14일<br><span style="font-size:12px;color:#888">(14일)</span></div></div>
+</div>
+<div class="gg">
+<div class="gc A"><div class="gn">A 그룹</div><div class="gd">상위 20% · 45명 · 상여 5명</div><div class="pl"><div><span>1위</span>70만원</div><div><span>2위</span>50만원</div><div><span>3위</span>35만원</div><div><span>4위</span>25만원</div><div><span>5위</span>20만원</div></div></div>
+<div class="gc B"><div class="gn">B 그룹</div><div class="gd">중위 30% · 70명 · 상여 7명</div><div class="pl"><div><span>1위</span>50만원</div><div><span>2위</span>40만원</div><div><span>3위</span>30만원</div><div><span>4위</span>20만원</div><div><span>5위</span>15만원</div><div><span>6~7위</span>10만원</div></div></div>
+<div class="gc C"><div class="gn">C 그룹</div><div class="gd">하위 50% · 115명 · 상여 10명</div><div class="pl"><div><span>1위</span>40만원</div><div><span>2위</span>30만원</div><div><span>3위</span>25만원</div><div><span>4~5위</span>15만원</div><div><span>6~10위</span>10만원</div></div></div>
+</div>
+</div>
+
+<div class="pg" id="pg-ranking">
+<div class="card">
+<div class="ch">
+<h2>전체 순위</h2>
+<div class="frow">
+<button class="rt on" id="rt1" onclick="setRound('1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="rt2" onclick="setRound('2')">🥈 2차전 7/1~7/14</button>
+<span style="color:#ddd">|</span>
+<button class="gt on" id="gt-ALL" onclick="setGroup('ALL')">전체</button>
+<button class="gt" id="gt-A" onclick="setGroup('A')">A그룹</button>
+<button class="gt" id="gt-B" onclick="setGroup('B')">B그룹</button>
+<button class="gt" id="gt-C" onclick="setGroup('C')">C그룹</button>
+<span id="snap-info" style="font-size:11px;color:#888;margin-left:auto"></span>
+<button class="adm-btn" onclick="saveSnapshot()" title="현재 순위 저장 (관리자)">📸</button>
+<button class="adm-btn" onclick="clearSnapshot()" title="초기화 (관리자)">🗑️</button>
+</div>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:50px">차수</th><th style="width:58px">그룹</th>
+<th style="width:72px;text-align:left">지점</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:105px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th><th style="width:76px">비고</th>
+</tr></thead>
+<tbody id="tb-rank"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-강남">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">강남 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-강남">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-강남" onclick="setBranchRound('강남','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-강남" onclick="setBranchRound('강남','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-강남"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-강남"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-강남" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-강남" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-강남" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('강남')">+ 추가</button>
+<span id="cnt-강남" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-강남"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-홍대">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">홍대 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-홍대">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-홍대" onclick="setBranchRound('홍대','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-홍대" onclick="setBranchRound('홍대','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-홍대"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-홍대"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-홍대" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-홍대" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-홍대" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('홍대')">+ 추가</button>
+<span id="cnt-홍대" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-홍대"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-부산">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">부산 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-부산">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-부산" onclick="setBranchRound('부산','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-부산" onclick="setBranchRound('부산','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-부산"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-부산"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-부산" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-부산" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-부산" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('부산')">+ 추가</button>
+<span id="cnt-부산" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-부산"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-부평">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">부평 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-부평">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-부평" onclick="setBranchRound('부평','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-부평" onclick="setBranchRound('부평','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-부평"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-부평"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-부평" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-부평" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-부평" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('부평')">+ 추가</button>
+<span id="cnt-부평" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-부평"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-대구">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">대구 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-대구">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-대구" onclick="setBranchRound('대구','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-대구" onclick="setBranchRound('대구','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-대구"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-대구"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-대구" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-대구" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-대구" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('대구')">+ 추가</button>
+<span id="cnt-대구" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-대구"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-대전">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">대전 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-대전">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-대전" onclick="setBranchRound('대전','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-대전" onclick="setBranchRound('대전','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-대전"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-대전"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-대전" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-대전" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-대전" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('대전')">+ 추가</button>
+<span id="cnt-대전" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-대전"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-광주">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">광주 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-광주">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-광주" onclick="setBranchRound('광주','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-광주" onclick="setBranchRound('광주','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-광주"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-광주"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-광주" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-광주" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-광주" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('광주')">+ 추가</button>
+<span id="cnt-광주" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-광주"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-수원">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">수원 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-수원">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-수원" onclick="setBranchRound('수원','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-수원" onclick="setBranchRound('수원','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-수원"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-수원"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-수원" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-수원" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-수원" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('수원')">+ 추가</button>
+<span id="cnt-수원" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-수원"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-일산">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">일산 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-일산">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-일산" onclick="setBranchRound('일산','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-일산" onclick="setBranchRound('일산','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-일산"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-일산"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-일산" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-일산" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-일산" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('일산')">+ 추가</button>
+<span id="cnt-일산" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-일산"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-구월">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">구월 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-구월">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-구월" onclick="setBranchRound('구월','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-구월" onclick="setBranchRound('구월','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-구월"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-구월"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-구월" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-구월" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-구월" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('구월')">+ 추가</button>
+<span id="cnt-구월" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-구월"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-울산">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">울산 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-울산">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-울산" onclick="setBranchRound('울산','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-울산" onclick="setBranchRound('울산','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-울산"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-울산"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-울산" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-울산" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-울산" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('울산')">+ 추가</button>
+<span id="cnt-울산" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-울산"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-노원">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">노원 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-노원">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-노원" onclick="setBranchRound('노원','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-노원" onclick="setBranchRound('노원','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-노원"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-노원"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-노원" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-노원" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-노원" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('노원')">+ 추가</button>
+<span id="cnt-노원" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-노원"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-분당">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">분당 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-분당">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-분당" onclick="setBranchRound('분당','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-분당" onclick="setBranchRound('분당','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-분당"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-분당"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-분당" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-분당" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-분당" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('분당')">+ 추가</button>
+<span id="cnt-분당" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-분당"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-종로">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">종로 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-종로">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-종로" onclick="setBranchRound('종로','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-종로" onclick="setBranchRound('종로','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-종로"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-종로"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-종로" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-종로" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-종로" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('종로')">+ 추가</button>
+<span id="cnt-종로" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-종로"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-안산">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">안산 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-안산">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-안산" onclick="setBranchRound('안산','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-안산" onclick="setBranchRound('안산','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-안산"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-안산"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-안산" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-안산" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-안산" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('안산')">+ 추가</button>
+<span id="cnt-안산" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-안산"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-안양">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">안양 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-안양">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-안양" onclick="setBranchRound('안양','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-안양" onclick="setBranchRound('안양','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-안양"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-안양"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-안양" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-안양" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-안양" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('안양')">+ 추가</button>
+<span id="cnt-안양" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-안양"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-천안">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">천안 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-천안">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-천안" onclick="setBranchRound('천안','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-천안" onclick="setBranchRound('천안','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-천안"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-천안"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-천안" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-천안" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-천안" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('천안')">+ 추가</button>
+<span id="cnt-천안" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-천안"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="pg" id="pg-청주">
+<div style="margin-bottom:16px"><h2 style="font-size:20px;font-weight:900;color:#1B2F5E">청주 지점</h2><p style="font-size:13px;color:#888;margin-top:3px">매출 입력 시 전체 순위 실시간 반영</p></div>
+
+<div class="card">
+<div class="ch">
+<h2 id="bh-청주">🥇 1차전 명단</h2>
+<div class="frow">
+<button class="rt on" id="brt1-청주" onclick="setBranchRound('청주','1')">🥇 1차전 6/12~6/30</button>
+<button class="rt" id="brt2-청주" onclick="setBranchRound('청주','2')">🥈 2차전 7/1~7/14</button>
+</div>
+</div>
+<div class="frow2">
+<select id="fg-청주"><option value="">그룹</option><option value="A">A그룹</option><option value="B">B그룹</option><option value="C">C그룹</option></select>
+<select id="fk-청주"><option value="">직급</option><option value="부장">부장</option><option value="팀장">팀장</option><option value="수석">수석</option><option value="책임">책임</option><option value="선임">선임</option><option value="경력">경력</option></select>
+<input type="text" id="fn-청주" placeholder="이름" maxlength="10" style="width:90px">
+<input type="text" id="fs-청주" placeholder="매출" inputmode="numeric" style="width:130px" oninput="oninputSales(this)">
+<input type="text" id="fo-청주" placeholder="비고" maxlength="20" style="width:90px">
+<button class="btn-add" onclick="addEntry3('청주')">+ 추가</button>
+<span id="cnt-청주" style="font-size:12px;color:#888;margin-left:auto;align-self:center"></span>
+</div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr>
+<th style="width:46px">순위</th><th style="width:58px">그룹</th><th style="width:58px">직급</th>
+<th style="text-align:left">이름</th><th style="width:112px">매출</th>
+<th style="width:76px">변동</th><th style="width:78px">상금</th>
+<th style="width:80px">비고</th><th style="width:34px"></th>
+</tr></thead>
+<tbody id="tb-청주"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+<script>
+var PRIZE = {
+  A: [700000,500000,350000,250000,200000],
+  B: [500000,400000,300000,200000,150000,100000,100000],
+  C: [400000,300000,250000,150000,150000,100000,100000,100000,100000,100000]
+};
+var BRANCHES = ['강남','홍대','부산','부평','대구','대전','광주','수원','일산','구월','울산','노원','분당','종로','안산','안양','천안','청주'];
+
+var data = [{"id": 1, "branch": "강남", "round": "1", "group": "A", "rank": "팀장", "name": "한수아", "sales": 3000000, "note": ""}, {"id": 2, "branch": "강남", "round": "1", "group": "A", "rank": "경력", "name": "최도윤", "sales": 1390000, "note": ""}, {"id": 3, "branch": "강남", "round": "1", "group": "A", "rank": "부장", "name": "임나은", "sales": 1450000, "note": ""}, {"id": 4, "branch": "강남", "round": "1", "group": "C", "rank": "경력", "name": "최준서", "sales": 770000, "note": ""}, {"id": 5, "branch": "강남", "round": "1", "group": "C", "rank": "책임", "name": "장지아", "sales": 2750000, "note": ""}, {"id": 6, "branch": "강남", "round": "2", "group": "B", "rank": "부장", "name": "윤성민", "sales": 2130000, "note": ""}, {"id": 7, "branch": "강남", "round": "2", "group": "C", "rank": "팀장", "name": "오나은", "sales": 2090000, "note": ""}, {"id": 8, "branch": "강남", "round": "2", "group": "C", "rank": "부장", "name": "최지민", "sales": 1440000, "note": ""}, {"id": 9, "branch": "강남", "round": "2", "group": "C", "rank": "팀장", "name": "조수아", "sales": 6680000, "note": ""}, {"id": 10, "branch": "강남", "round": "2", "group": "C", "rank": "경력", "name": "정서연", "sales": 1770000, "note": ""}, {"id": 11, "branch": "홍대", "round": "1", "group": "A", "rank": "경력", "name": "권승현", "sales": 3500000, "note": ""}, {"id": 12, "branch": "홍대", "round": "1", "group": "C", "rank": "팀장", "name": "신유진", "sales": 6410000, "note": ""}, {"id": 13, "branch": "홍대", "round": "1", "group": "A", "rank": "부장", "name": "최혜원", "sales": 7270000, "note": ""}, {"id": 14, "branch": "홍대", "round": "1", "group": "B", "rank": "부장", "name": "정지훈", "sales": 4390000, "note": ""}, {"id": 15, "branch": "홍대", "round": "1", "group": "C", "rank": "차장", "name": "정태양", "sales": 4290000, "note": ""}, {"id": 16, "branch": "홍대", "round": "2", "group": "B", "rank": "부장", "name": "강지아", "sales": 6730000, "note": ""}, {"id": 17, "branch": "홍대", "round": "2", "group": "C", "rank": "차장", "name": "한시우", "sales": 2170000, "note": ""}, {"id": 18, "branch": "홍대", "round": "2", "group": "B", "rank": "경력", "name": "윤승현", "sales": 2740000, "note": ""}, {"id": 19, "branch": "홍대", "round": "2", "group": "A", "rank": "차장", "name": "한민서", "sales": 820000, "note": ""}, {"id": 20, "branch": "홍대", "round": "2", "group": "C", "rank": "팀장", "name": "서민서", "sales": 1170000, "note": ""}, {"id": 21, "branch": "부산", "round": "1", "group": "C", "rank": "차장", "name": "최성민", "sales": 7210000, "note": ""}, {"id": 22, "branch": "부산", "round": "1", "group": "C", "rank": "차장", "name": "권유진", "sales": 3210000, "note": ""}, {"id": 23, "branch": "부산", "round": "1", "group": "C", "rank": "경력", "name": "박준서", "sales": 3190000, "note": ""}, {"id": 24, "branch": "부산", "round": "1", "group": "C", "rank": "경력", "name": "오성민", "sales": 4580000, "note": ""}, {"id": 25, "branch": "부산", "round": "1", "group": "B", "rank": "경력", "name": "강준서", "sales": 5550000, "note": ""}, {"id": 26, "branch": "부산", "round": "2", "group": "A", "rank": "부장", "name": "이지민", "sales": 2060000, "note": ""}, {"id": 27, "branch": "부산", "round": "2", "group": "C", "rank": "경력", "name": "서준혁", "sales": 1150000, "note": ""}, {"id": 28, "branch": "부산", "round": "2", "group": "C", "rank": "책임", "name": "조승현", "sales": 5910000, "note": ""}, {"id": 29, "branch": "부산", "round": "2", "group": "A", "rank": "부장", "name": "정소율", "sales": 7480000, "note": ""}, {"id": 30, "branch": "부산", "round": "2", "group": "B", "rank": "팀장", "name": "권소율", "sales": 1640000, "note": ""}, {"id": 31, "branch": "부평", "round": "1", "group": "B", "rank": "책임", "name": "정나은", "sales": 530000, "note": ""}, {"id": 32, "branch": "부평", "round": "1", "group": "B", "rank": "경력", "name": "오상훈", "sales": 2320000, "note": ""}, {"id": 33, "branch": "부평", "round": "1", "group": "B", "rank": "경력", "name": "장수아", "sales": 6730000, "note": ""}, {"id": 34, "branch": "부평", "round": "1", "group": "B", "rank": "경력", "name": "강지민", "sales": 5930000, "note": ""}, {"id": 35, "branch": "부평", "round": "1", "group": "C", "rank": "팀장", "name": "권민준", "sales": 5500000, "note": ""}, {"id": 36, "branch": "부평", "round": "2", "group": "C", "rank": "팀장", "name": "김수아", "sales": 2950000, "note": ""}, {"id": 37, "branch": "부평", "round": "2", "group": "C", "rank": "부장", "name": "김준서", "sales": 1370000, "note": ""}, {"id": 38, "branch": "부평", "round": "2", "group": "A", "rank": "경력", "name": "오하은", "sales": 1780000, "note": ""}, {"id": 39, "branch": "부평", "round": "2", "group": "C", "rank": "경력", "name": "박준혁", "sales": 2190000, "note": ""}, {"id": 40, "branch": "부평", "round": "2", "group": "C", "rank": "책임", "name": "정재원", "sales": 2660000, "note": ""}, {"id": 41, "branch": "대구", "round": "1", "group": "B", "rank": "팀장", "name": "서상훈", "sales": 4580000, "note": ""}, {"id": 42, "branch": "대구", "round": "1", "group": "C", "rank": "책임", "name": "한유진", "sales": 5790000, "note": ""}, {"id": 43, "branch": "대구", "round": "1", "group": "B", "rank": "차장", "name": "윤수아", "sales": 1150000, "note": ""}, {"id": 44, "branch": "대구", "round": "1", "group": "C", "rank": "경력", "name": "강민준", "sales": 2850000, "note": ""}, {"id": 45, "branch": "대구", "round": "1", "group": "A", "rank": "부장", "name": "임준서", "sales": 7740000, "note": ""}, {"id": 46, "branch": "대구", "round": "2", "group": "B", "rank": "부장", "name": "한서연", "sales": 820000, "note": ""}, {"id": 47, "branch": "대구", "round": "2", "group": "A", "rank": "경력", "name": "신민서", "sales": 2930000, "note": ""}, {"id": 48, "branch": "대구", "round": "2", "group": "C", "rank": "차장", "name": "정준혁", "sales": 6020000, "note": ""}, {"id": 49, "branch": "대구", "round": "2", "group": "C", "rank": "경력", "name": "박상훈", "sales": 5340000, "note": ""}, {"id": 50, "branch": "대구", "round": "2", "group": "C", "rank": "차장", "name": "최하은", "sales": 1460000, "note": ""}, {"id": 51, "branch": "대전", "round": "1", "group": "C", "rank": "팀장", "name": "이준혁", "sales": 4830000, "note": ""}, {"id": 52, "branch": "대전", "round": "1", "group": "A", "rank": "부장", "name": "조태양", "sales": 1120000, "note": ""}, {"id": 53, "branch": "대전", "round": "1", "group": "C", "rank": "부장", "name": "조상훈", "sales": 3040000, "note": ""}, {"id": 54, "branch": "대전", "round": "1", "group": "C", "rank": "책임", "name": "최지아", "sales": 1930000, "note": ""}, {"id": 55, "branch": "대전", "round": "1", "group": "B", "rank": "책임", "name": "조시우", "sales": 3050000, "note": ""}, {"id": 56, "branch": "대전", "round": "2", "group": "C", "rank": "경력", "name": "신지훈", "sales": 1500000, "note": ""}, {"id": 57, "branch": "대전", "round": "2", "group": "C", "rank": "부장", "name": "김유진", "sales": 1450000, "note": ""}, {"id": 58, "branch": "대전", "round": "2", "group": "B", "rank": "차장", "name": "권지민", "sales": 4660000, "note": ""}, {"id": 59, "branch": "대전", "round": "2", "group": "B", "rank": "책임", "name": "윤하은", "sales": 1100000, "note": ""}, {"id": 60, "branch": "대전", "round": "2", "group": "A", "rank": "책임", "name": "박승현", "sales": 3210000, "note": ""}, {"id": 61, "branch": "광주", "round": "1", "group": "B", "rank": "책임", "name": "권태양", "sales": 7630000, "note": ""}, {"id": 62, "branch": "광주", "round": "1", "group": "C", "rank": "차장", "name": "오소율", "sales": 2440000, "note": ""}, {"id": 63, "branch": "광주", "round": "1", "group": "A", "rank": "경력", "name": "정지아", "sales": 6050000, "note": ""}, {"id": 64, "branch": "광주", "round": "1", "group": "C", "rank": "부장", "name": "김상훈", "sales": 1010000, "note": ""}, {"id": 65, "branch": "광주", "round": "1", "group": "C", "rank": "경력", "name": "임하은", "sales": 2110000, "note": ""}, {"id": 66, "branch": "광주", "round": "2", "group": "A", "rank": "차장", "name": "김재원", "sales": 1200000, "note": ""}, {"id": 67, "branch": "광주", "round": "2", "group": "B", "rank": "책임", "name": "임지훈", "sales": 1720000, "note": ""}, {"id": 68, "branch": "광주", "round": "2", "group": "B", "rank": "경력", "name": "권성민", "sales": 6580000, "note": ""}, {"id": 69, "branch": "광주", "round": "2", "group": "A", "rank": "책임", "name": "김다은", "sales": 7230000, "note": ""}, {"id": 70, "branch": "광주", "round": "2", "group": "C", "rank": "팀장", "name": "임성민", "sales": 3170000, "note": ""}, {"id": 71, "branch": "수원", "round": "1", "group": "C", "rank": "차장", "name": "최준혁", "sales": 3210000, "note": ""}, {"id": 72, "branch": "수원", "round": "1", "group": "B", "rank": "책임", "name": "조도윤", "sales": 3730000, "note": ""}, {"id": 73, "branch": "수원", "round": "1", "group": "A", "rank": "책임", "name": "권지훈", "sales": 6860000, "note": ""}, {"id": 74, "branch": "수원", "round": "1", "group": "A", "rank": "경력", "name": "임수아", "sales": 2680000, "note": ""}, {"id": 75, "branch": "수원", "round": "1", "group": "B", "rank": "팀장", "name": "장예은", "sales": 1200000, "note": ""}, {"id": 76, "branch": "수원", "round": "2", "group": "C", "rank": "팀장", "name": "권준서", "sales": 2110000, "note": ""}, {"id": 77, "branch": "수원", "round": "2", "group": "B", "rank": "경력", "name": "윤소율", "sales": 7190000, "note": ""}, {"id": 78, "branch": "수원", "round": "2", "group": "C", "rank": "팀장", "name": "장민준", "sales": 7290000, "note": ""}, {"id": 79, "branch": "수원", "round": "2", "group": "B", "rank": "부장", "name": "이도윤", "sales": 1590000, "note": ""}, {"id": 80, "branch": "수원", "round": "2", "group": "B", "rank": "경력", "name": "박예은", "sales": 2650000, "note": ""}, {"id": 81, "branch": "일산", "round": "1", "group": "B", "rank": "팀장", "name": "오민서", "sales": 5670000, "note": ""}, {"id": 82, "branch": "일산", "round": "1", "group": "A", "rank": "부장", "name": "윤예은", "sales": 6990000, "note": ""}, {"id": 83, "branch": "일산", "round": "1", "group": "A", "rank": "부장", "name": "조예은", "sales": 3910000, "note": ""}, {"id": 84, "branch": "일산", "round": "1", "group": "B", "rank": "차장", "name": "서도윤", "sales": 5020000, "note": ""}, {"id": 85, "branch": "일산", "round": "1", "group": "C", "rank": "경력", "name": "장혜원", "sales": 590000, "note": ""}, {"id": 86, "branch": "일산", "round": "2", "group": "B", "rank": "경력", "name": "이지훈", "sales": 860000, "note": ""}, {"id": 87, "branch": "일산", "round": "2", "group": "C", "rank": "경력", "name": "신지원", "sales": 2010000, "note": ""}, {"id": 88, "branch": "일산", "round": "2", "group": "C", "rank": "부장", "name": "김현우", "sales": 4160000, "note": ""}, {"id": 89, "branch": "일산", "round": "2", "group": "C", "rank": "책임", "name": "이지원", "sales": 6850000, "note": ""}, {"id": 90, "branch": "일산", "round": "2", "group": "B", "rank": "차장", "name": "오도윤", "sales": 2310000, "note": ""}, {"id": 91, "branch": "구월", "round": "1", "group": "A", "rank": "차장", "name": "권나은", "sales": 3900000, "note": ""}, {"id": 92, "branch": "구월", "round": "1", "group": "B", "rank": "팀장", "name": "서나은", "sales": 2130000, "note": ""}, {"id": 93, "branch": "구월", "round": "1", "group": "A", "rank": "책임", "name": "서혜원", "sales": 890000, "note": ""}, {"id": 94, "branch": "구월", "round": "1", "group": "B", "rank": "차장", "name": "신하은", "sales": 5210000, "note": ""}, {"id": 95, "branch": "구월", "round": "1", "group": "B", "rank": "차장", "name": "강현우", "sales": 740000, "note": ""}, {"id": 96, "branch": "구월", "round": "2", "group": "C", "rank": "팀장", "name": "한지아", "sales": 3350000, "note": ""}, {"id": 97, "branch": "구월", "round": "2", "group": "C", "rank": "경력", "name": "서예은", "sales": 4590000, "note": ""}, {"id": 98, "branch": "구월", "round": "2", "group": "C", "rank": "부장", "name": "한소율", "sales": 1680000, "note": ""}, {"id": 99, "branch": "구월", "round": "2", "group": "B", "rank": "경력", "name": "권예은", "sales": 3210000, "note": ""}, {"id": 100, "branch": "구월", "round": "2", "group": "C", "rank": "책임", "name": "강상훈", "sales": 6700000, "note": ""}, {"id": 101, "branch": "울산", "round": "1", "group": "B", "rank": "팀장", "name": "조성민", "sales": 950000, "note": ""}, {"id": 102, "branch": "울산", "round": "1", "group": "B", "rank": "팀장", "name": "한상훈", "sales": 4910000, "note": ""}, {"id": 103, "branch": "울산", "round": "1", "group": "C", "rank": "팀장", "name": "권민서", "sales": 7290000, "note": ""}, {"id": 104, "branch": "울산", "round": "1", "group": "B", "rank": "경력", "name": "신수아", "sales": 3660000, "note": ""}, {"id": 105, "branch": "울산", "round": "1", "group": "C", "rank": "책임", "name": "한나은", "sales": 7630000, "note": ""}, {"id": 106, "branch": "울산", "round": "2", "group": "C", "rank": "책임", "name": "박지아", "sales": 7430000, "note": ""}, {"id": 107, "branch": "울산", "round": "2", "group": "C", "rank": "경력", "name": "오시우", "sales": 3580000, "note": ""}, {"id": 108, "branch": "울산", "round": "2", "group": "A", "rank": "팀장", "name": "조소율", "sales": 3430000, "note": ""}, {"id": 109, "branch": "울산", "round": "2", "group": "C", "rank": "경력", "name": "최나은", "sales": 7200000, "note": ""}, {"id": 110, "branch": "울산", "round": "2", "group": "C", "rank": "책임", "name": "강태양", "sales": 7410000, "note": ""}, {"id": 111, "branch": "노원", "round": "1", "group": "C", "rank": "차장", "name": "최재원", "sales": 7240000, "note": ""}, {"id": 112, "branch": "노원", "round": "1", "group": "C", "rank": "경력", "name": "이현우", "sales": 3930000, "note": ""}, {"id": 113, "branch": "노원", "round": "1", "group": "B", "rank": "차장", "name": "정준서", "sales": 750000, "note": ""}, {"id": 114, "branch": "노원", "round": "1", "group": "A", "rank": "책임", "name": "윤다은", "sales": 4740000, "note": ""}, {"id": 115, "branch": "노원", "round": "1", "group": "C", "rank": "책임", "name": "임지아", "sales": 4590000, "note": ""}, {"id": 116, "branch": "노원", "round": "2", "group": "A", "rank": "부장", "name": "한혜원", "sales": 4850000, "note": ""}, {"id": 117, "branch": "노원", "round": "2", "group": "C", "rank": "책임", "name": "최시우", "sales": 1010000, "note": ""}, {"id": 118, "branch": "노원", "round": "2", "group": "A", "rank": "책임", "name": "장준서", "sales": 1860000, "note": ""}, {"id": 119, "branch": "노원", "round": "2", "group": "C", "rank": "경력", "name": "서태양", "sales": 6590000, "note": ""}, {"id": 120, "branch": "노원", "round": "2", "group": "C", "rank": "책임", "name": "임상훈", "sales": 6110000, "note": ""}, {"id": 121, "branch": "분당", "round": "1", "group": "C", "rank": "책임", "name": "윤시우", "sales": 3150000, "note": ""}, {"id": 122, "branch": "분당", "round": "1", "group": "B", "rank": "경력", "name": "서준서", "sales": 5460000, "note": ""}, {"id": 123, "branch": "분당", "round": "1", "group": "B", "rank": "책임", "name": "한준서", "sales": 1290000, "note": ""}, {"id": 124, "branch": "분당", "round": "1", "group": "B", "rank": "팀장", "name": "오현우", "sales": 3930000, "note": ""}, {"id": 125, "branch": "분당", "round": "1", "group": "A", "rank": "차장", "name": "강소율", "sales": 2040000, "note": ""}, {"id": 126, "branch": "분당", "round": "2", "group": "B", "rank": "차장", "name": "최승현", "sales": 1150000, "note": ""}, {"id": 127, "branch": "분당", "round": "2", "group": "C", "rank": "경력", "name": "조나은", "sales": 5270000, "note": ""}, {"id": 128, "branch": "분당", "round": "2", "group": "B", "rank": "책임", "name": "조서연", "sales": 4480000, "note": ""}, {"id": 129, "branch": "분당", "round": "2", "group": "A", "rank": "경력", "name": "임혜원", "sales": 4390000, "note": ""}, {"id": 130, "branch": "분당", "round": "2", "group": "C", "rank": "팀장", "name": "윤민준", "sales": 4490000, "note": ""}, {"id": 131, "branch": "종로", "round": "1", "group": "C", "rank": "경력", "name": "신나은", "sales": 6670000, "note": ""}, {"id": 132, "branch": "종로", "round": "1", "group": "B", "rank": "책임", "name": "윤준서", "sales": 5470000, "note": ""}, {"id": 133, "branch": "종로", "round": "1", "group": "C", "rank": "책임", "name": "김승현", "sales": 7910000, "note": ""}, {"id": 134, "branch": "종로", "round": "1", "group": "B", "rank": "경력", "name": "박태양", "sales": 5960000, "note": ""}, {"id": 135, "branch": "종로", "round": "1", "group": "A", "rank": "책임", "name": "한민준", "sales": 1880000, "note": ""}, {"id": 136, "branch": "종로", "round": "2", "group": "B", "rank": "부장", "name": "신태양", "sales": 3160000, "note": ""}, {"id": 137, "branch": "종로", "round": "2", "group": "B", "rank": "책임", "name": "조민서", "sales": 3840000, "note": ""}, {"id": 138, "branch": "종로", "round": "2", "group": "C", "rank": "팀장", "name": "정지민", "sales": 1330000, "note": ""}, {"id": 139, "branch": "종로", "round": "2", "group": "B", "rank": "부장", "name": "김지원", "sales": 7170000, "note": ""}, {"id": 140, "branch": "종로", "round": "2", "group": "A", "rank": "차장", "name": "김지민", "sales": 2540000, "note": ""}, {"id": 141, "branch": "안산", "round": "1", "group": "C", "rank": "차장", "name": "신민준", "sales": 2940000, "note": ""}, {"id": 142, "branch": "안산", "round": "1", "group": "A", "rank": "경력", "name": "박하은", "sales": 2730000, "note": ""}, {"id": 143, "branch": "안산", "round": "1", "group": "B", "rank": "팀장", "name": "윤혜원", "sales": 2210000, "note": ""}, {"id": 144, "branch": "안산", "round": "1", "group": "A", "rank": "차장", "name": "임다은", "sales": 3680000, "note": ""}, {"id": 145, "branch": "안산", "round": "1", "group": "A", "rank": "팀장", "name": "이성민", "sales": 6390000, "note": ""}, {"id": 146, "branch": "안산", "round": "2", "group": "C", "rank": "차장", "name": "한승현", "sales": 1270000, "note": ""}, {"id": 147, "branch": "안산", "round": "2", "group": "B", "rank": "경력", "name": "최수아", "sales": 1730000, "note": ""}, {"id": 148, "branch": "안산", "round": "2", "group": "A", "rank": "팀장", "name": "서성민", "sales": 5950000, "note": ""}, {"id": 149, "branch": "안산", "round": "2", "group": "C", "rank": "부장", "name": "조준혁", "sales": 5680000, "note": ""}, {"id": 150, "branch": "안산", "round": "2", "group": "C", "rank": "부장", "name": "김나은", "sales": 4930000, "note": ""}, {"id": 151, "branch": "안양", "round": "1", "group": "C", "rank": "차장", "name": "강유진", "sales": 4950000, "note": ""}, {"id": 152, "branch": "안양", "round": "1", "group": "B", "rank": "경력", "name": "장유진", "sales": 6010000, "note": ""}, {"id": 153, "branch": "안양", "round": "1", "group": "C", "rank": "책임", "name": "서하은", "sales": 7980000, "note": ""}, {"id": 154, "branch": "안양", "round": "1", "group": "C", "rank": "차장", "name": "임예은", "sales": 1380000, "note": ""}, {"id": 155, "branch": "안양", "round": "1", "group": "C", "rank": "팀장", "name": "임준혁", "sales": 790000, "note": ""}, {"id": 156, "branch": "안양", "round": "2", "group": "B", "rank": "책임", "name": "윤민서", "sales": 2670000, "note": ""}, {"id": 157, "branch": "안양", "round": "2", "group": "C", "rank": "팀장", "name": "강예은", "sales": 6600000, "note": ""}, {"id": 158, "branch": "안양", "round": "2", "group": "C", "rank": "부장", "name": "오예은", "sales": 5790000, "note": ""}, {"id": 159, "branch": "안양", "round": "2", "group": "B", "rank": "책임", "name": "최지훈", "sales": 5500000, "note": ""}, {"id": 160, "branch": "안양", "round": "2", "group": "B", "rank": "책임", "name": "장지민", "sales": 7110000, "note": ""}, {"id": 161, "branch": "천안", "round": "1", "group": "B", "rank": "경력", "name": "오준서", "sales": 4270000, "note": ""}, {"id": 162, "branch": "천안", "round": "1", "group": "C", "rank": "경력", "name": "장지원", "sales": 3880000, "note": ""}, {"id": 163, "branch": "천안", "round": "1", "group": "C", "rank": "팀장", "name": "강혜원", "sales": 3630000, "note": ""}, {"id": 164, "branch": "천안", "round": "1", "group": "B", "rank": "팀장", "name": "이상훈", "sales": 1720000, "note": ""}, {"id": 165, "branch": "천안", "round": "1", "group": "C", "rank": "팀장", "name": "최상훈", "sales": 7910000, "note": ""}, {"id": 166, "branch": "천안", "round": "2", "group": "C", "rank": "경력", "name": "임지민", "sales": 3390000, "note": ""}, {"id": 167, "branch": "천안", "round": "2", "group": "B", "rank": "차장", "name": "이지아", "sales": 4190000, "note": ""}, {"id": 168, "branch": "천안", "round": "2", "group": "A", "rank": "경력", "name": "박현우", "sales": 1790000, "note": ""}, {"id": 169, "branch": "천안", "round": "2", "group": "B", "rank": "차장", "name": "김소율", "sales": 7030000, "note": ""}, {"id": 170, "branch": "천안", "round": "2", "group": "C", "rank": "부장", "name": "신지민", "sales": 620000, "note": ""}, {"id": 171, "branch": "청주", "round": "1", "group": "C", "rank": "책임", "name": "임현우", "sales": 5010000, "note": ""}, {"id": 172, "branch": "청주", "round": "1", "group": "A", "rank": "팀장", "name": "강시우", "sales": 5390000, "note": ""}, {"id": 173, "branch": "청주", "round": "1", "group": "A", "rank": "경력", "name": "조하은", "sales": 6940000, "note": ""}, {"id": 174, "branch": "청주", "round": "1", "group": "C", "rank": "팀장", "name": "박도윤", "sales": 1370000, "note": ""}, {"id": 175, "branch": "청주", "round": "1", "group": "C", "rank": "경력", "name": "조다은", "sales": 2810000, "note": ""}, {"id": 176, "branch": "청주", "round": "2", "group": "C", "rank": "책임", "name": "서재원", "sales": 5030000, "note": ""}, {"id": 177, "branch": "청주", "round": "2", "group": "C", "rank": "팀장", "name": "정성민", "sales": 6320000, "note": ""}, {"id": 178, "branch": "청주", "round": "2", "group": "C", "rank": "부장", "name": "임서연", "sales": 2620000, "note": ""}, {"id": 179, "branch": "청주", "round": "2", "group": "B", "rank": "차장", "name": "이시우", "sales": 6150000, "note": ""}, {"id": 180, "branch": "청주", "round": "2", "group": "B", "rank": "책임", "name": "최현우", "sales": 1220000, "note": ""}];
+var uid = data.reduce(function(m,d){ return Math.max(m, d.id); }, 0) + 1;
+var API_URL = 'https://script.google.com/macros/s/AKfycbyjTT05INK-K4E-ppbIfylmIejGb3qZyxqmP97JJWkVi9_Ueav3QtSvcPKZ7pi_t36Q/exec';
+var isLoading = false;
+var lastSync = 0;
+var pendingSyncs = 0;
+var lastChangeTime = 0;
+
+// 서버에서 데이터 불러오기
+function loadFromServer() {
+  if (isLoading) return;
+  // 진행 중인 저장 요청이 있으면 스킵
+  if (pendingSyncs > 0) return;
+  // 마지막 변경 후 5초 안 지났으면 스킵 (서버 반영 대기)
+  if (Date.now() - lastChangeTime < 5000) return;
+  isLoading = true;
+  var stat = document.getElementById('sync-status');
+  if (stat) stat.innerHTML = '<span style="color:#1565C0">⏳ 동기화 중...</span>';
+  
+  // JSONP 방식으로 CORS 우회
+  var cbName = 'jsonp_cb_' + Date.now();
+  var script = document.createElement('script');
+  var timeoutId = setTimeout(function(){
+    if (window[cbName]) {
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+      if (stat) stat.innerHTML = '<span style="color:#C62828">❌ 동기화 실패 — 오프라인 모드</span>';
+      isLoading = false;
+    }
+  }, 10000);
+  
+  window[cbName] = function(serverData) {
+    clearTimeout(timeoutId);
+    delete window[cbName];
+    if (script.parentNode) script.parentNode.removeChild(script);
+    processServerData(serverData);
+  };
+  
+  script.src = API_URL + '?callback=' + cbName + '&_=' + Date.now();
+  script.onerror = function() {
+    clearTimeout(timeoutId);
+    delete window[cbName];
+    if (stat) stat.innerHTML = '<span style="color:#C62828">❌ 동기화 실패</span>';
+    isLoading = false;
+  };
+  document.head.appendChild(script);
+}
+
+function processServerData(serverData) {
+  var stat = document.getElementById('sync-status');
+  try {
+      // 서버 데이터로 교체
+    data = serverData.map(function(d){
+      return {
+        id: parseInt(d.id),
+        branch: d.branch,
+        round: String(d.round),
+        group: d.group,
+        rank: d.rank,
+        name: d.name,
+        sales: parseInt(d.sales) || 0,
+        note: d.note || ''
+      };
+    });
+    uid = data.length ? data.reduce(function(m,d){return Math.max(m, d.id);}, 0) + 1 : 1;
+    try { localStorage.setItem('mc_v7', JSON.stringify(data)); } catch(e) {}
+    var now = new Date();
+    lastSync = now.getTime();
+    var t = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
+    if (stat) stat.innerHTML = '<span style="color:#2E7D32">✅ 동기화 완료 ' + t + '</span>';
+    isLoading = false;
+    renderAll();
+  } catch(e) {
+    if (stat) stat.innerHTML = '<span style="color:#C62828">❌ 데이터 처리 오류</span>';
+    isLoading = false;
+  }
+}
+
+// 서버에 추가
+function syncAdd(d) {
+  pendingSyncs++;
+  lastChangeTime = Date.now();
+  var fd = new FormData();
+  fd.append('payload', JSON.stringify({ action: 'add', data: d }));
+  fetch(API_URL, { method: 'POST', body: fd })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      setTimeout(function(){ pendingSyncs--; lastChangeTime = Date.now(); }, 2000);
+    })
+    .catch(function(err){ 
+      pendingSyncs--;
+      console.error('add failed:', err); 
+    });
+}
+
+// 서버에 수정
+function syncUpdate(d) {
+  pendingSyncs++;
+  lastChangeTime = Date.now();
+  var fd = new FormData();
+  fd.append('payload', JSON.stringify({ action: 'update', data: d }));
+  fetch(API_URL, { method: 'POST', body: fd })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      setTimeout(function(){ pendingSyncs--; lastChangeTime = Date.now(); }, 2000);
+    })
+    .catch(function(err){ 
+      pendingSyncs--;
+      console.error('update failed:', err); 
+    });
+}
+
+// 서버에서 삭제
+function syncDelete(id) {
+  pendingSyncs++;
+  lastChangeTime = Date.now();
+  var fd = new FormData();
+  fd.append('payload', JSON.stringify({ action: 'delete', id: id }));
+  fetch(API_URL, { method: 'POST', body: fd })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      setTimeout(function(){ pendingSyncs--; lastChangeTime = Date.now(); }, 2000);
+    })
+    .catch(function(err){ 
+      pendingSyncs--;
+      console.error('delete failed:', err); 
+    });
+}
+
+// 10초마다 자동 동기화
+setInterval(loadFromServer, 10000);
+
+var prevRanks = {};
+var snapshotTime = '';
+try {
+  var savedSnap = localStorage.getItem('mc_snapshot_v1');
+  if (savedSnap) {
+    var sn = JSON.parse(savedSnap);
+    prevRanks = sn.ranks || {};
+    snapshotTime = sn.time || '';
+  }
+} catch(e) {}
+var cRound = '1';
+var cGroup = 'ALL';
+var branchRound = {};
+
+try {
+  var sv = localStorage.getItem('mc_v7');
+  if (sv) {
+    data = JSON.parse(sv);
+    uid = data.reduce(function(m,d){ return Math.max(m, d.id); }, 0) + 1;
+  }
+} catch(e) {}
+
+function save() {
+  try { localStorage.setItem('mc_v7', JSON.stringify(data)); } catch(e) {}
+}
+
+function fmt(v) { return v ? Number(v).toLocaleString() : '-'; }
+function fmtP(v) { return v ? (v/10000) + '만원' : '-'; }
+function gPrize(g, r) {
+  var a = PRIZE[g];
+  return (a && r >= 1 && r <= a.length) ? a[r-1] : 0;
+}
+
+function calcRanks(rnd) {
+  var res = {};
+  ['A','B','C'].forEach(function(g) {
+    var grp = data.filter(function(d){ return d.group === g && d.round === rnd; });
+    grp.sort(function(a,b){ return b.sales - a.sales; });
+    grp.forEach(function(d,i){ res[g + '|' + d.id] = i + 1; });
+  });
+  return res;
+}
+
+function mkBadge(g, id, ranks, rnd) {
+  var k = g + '|' + id;
+  var cur = ranks[k];
+  // 스냅샷 없으면 '-' 표시
+  if (Object.keys(prevRanks).length === 0) return '<span class="bch beq">-</span>';
+  var prevKey = 'R' + (rnd || '1') + '_' + k;
+  var prev = prevRanks[prevKey];
+  if (prev === undefined) return '<span class="bch bnw">NEW</span>';
+  var df = prev - cur;
+  if (df > 0) return '<span class="bch bup">▲ +' + df + '</span>';
+  if (df < 0) return '<span class="bch bdn">▼ ' + df + '</span>';
+  return '<span class="bch beq">─</span>';
+}
+
+function renderRanking() {
+  var tb = document.getElementById('tb-rank');
+  if (!tb) return;
+  var ranks = calcRanks(cRound);
+  var rows = data.filter(function(d){ return d.round === cRound && (cGroup === 'ALL' || d.group === cGroup); });
+  rows.sort(function(a,b){
+    if (a.group !== b.group) return a.group < b.group ? -1 : 1;
+    return (ranks[a.group + '|' + a.id] || 999) - (ranks[b.group + '|' + b.id] || 999);
+  });
+  if (!rows.length) {
+    tb.innerHTML = '<tr><td colspan="10" style="padding:36px;text-align:center;color:#888">데이터 없음</td></tr>';
+    return;
+  }
+  var out = '';
+  rows.forEach(function(d){
+    var r = ranks[d.group + '|' + d.id] || 99;
+    var rc = r <= 3 ? 'r' + r : '';
+    out += '<tr>'
+      + '<td><span class="rn ' + rc + '">' + r + '</span></td>'
+      + '<td><span class="rb rb' + d.round + '">' + d.round + '차</span></td>'
+      + '<td><span class="gb ' + d.group + '">' + d.group + '</span></td>'
+      + '<td style="text-align:left">' + d.branch + '</td>'
+      + '<td>' + d.rank + '</td>'
+      + '<td style="text-align:left"><b>' + d.name + '</b></td>'
+      + '<td>' + fmt(d.sales) + '</td>'
+      + '<td>' + mkBadge(d.group, d.id, ranks, d.round) + '</td>'
+      + '<td class="pz">' + fmtP(gPrize(d.group, r)) + '</td>'
+      + '<td style="font-size:12px;color:#888">' + (d.note || '') + '</td>'
+      + '</tr>';
+  });
+  tb.innerHTML = out;
+}
+
+function renderBranch(b) {
+  var rnd = branchRound[b] || '1';
+  var bh = document.getElementById('bh-' + b);
+  if (bh) bh.textContent = (rnd === '1' ? '🥇 1차전' : '🥈 2차전') + ' 명단';
+  var tb = document.getElementById('tb-' + b);
+  if (!tb) return;
+  var ranksR = calcRanks(rnd);
+  var rows = data.filter(function(d){ return d.branch === b && d.round === rnd; });
+  rows.sort(function(a,b2){
+    return (ranksR[a.group + '|' + a.id] || 999) - (ranksR[b2.group + '|' + b2.id] || 999);
+  });
+  var cnt = document.getElementById('cnt-' + b);
+  if (cnt) cnt.textContent = '총 ' + rows.length + '명';
+  if (!rows.length) {
+    tb.innerHTML = '<tr><td colspan="9" style="padding:36px;text-align:center;color:#888">데이터 없음</td></tr>';
+    return;
+  }
+  var out = '';
+  rows.forEach(function(d){
+    var r = ranksR[d.group + '|' + d.id] || 99;
+    var rc = r <= 3 ? 'r' + r : '';
+    out += '<tr>'
+      + '<td><span class="rn ' + rc + '">' + r + '</span></td>'
+      + '<td><span class="gb ' + d.group + '">' + d.group + '</span></td>'
+      + '<td>' + d.rank + '</td>'
+      + '<td style="text-align:left"><b>' + d.name + '</b></td>'
+      + '<td><input class="se" type="text" inputmode="numeric" value="' + Number(d.sales).toLocaleString() + '" data-id="' + d.id + '" onchange="updS(this)" onfocus="this.value=this.value.split(\',\').join(\'\')" onblur="onSalesBlur(this)" onkeydown="if(event.key===\'Enter\')this.blur()"></td>'
+      + '<td>' + mkBadge(d.group, d.id, ranksR, rnd) + '</td>'
+      + '<td class="pz">' + fmtP(gPrize(d.group, r)) + '</td>'
+      + '<td><input type="text" class="ne" value="' + (d.note || '') + '" data-id="' + d.id + '" onchange="updN(this)" placeholder="비고"></td>'
+      + '<td><button class="xbtn" data-id="' + d.id + '" onclick="delE(this)">✕</button></td>'
+      + '</tr>';
+  });
+  tb.innerHTML = out;
+}
+
+function setBranchRound(b, rnd) {
+  branchRound[b] = rnd;
+  var rt1 = document.getElementById('brt1-' + b);
+  var rt2 = document.getElementById('brt2-' + b);
+  if (rt1) rt1.className = 'rt' + (rnd === '1' ? ' on' : '');
+  if (rt2) rt2.className = 'rt' + (rnd === '2' ? ' on' : '');
+  renderBranch(b);
+}
+
+function addEntry3(b) {
+  var rnd = branchRound[b] || '1';
+  var grp = document.getElementById('fg-' + b).value;
+  var rnk = document.getElementById('fk-' + b).value;
+  var nm = document.getElementById('fn-' + b).value.trim();
+  var sl = parseInt((document.getElementById('fs-' + b).value || '').split(',').join(''));
+  var nt = document.getElementById('fo-' + b).value.trim();
+  if (!grp) { alert('그룹 선택'); return; }
+  if (!rnk) { alert('직급 선택'); return; }
+  if (!nm) { alert('이름 입력'); return; }
+  if (isNaN(sl)) { alert('매출 입력'); return; }
+  var newEntry = { id: uid++, branch: b, round: rnd, group: grp, rank: rnk, name: nm, sales: sl, note: nt };
+  data.push(newEntry);
+  save();
+  syncAdd(newEntry);
+  document.getElementById('fn-' + b).value = '';
+  document.getElementById('fs-' + b).value = '';
+  document.getElementById('fo-' + b).value = '';
+  renderAll();
+}
+
+var ADMIN_PW = '0911';
+function checkAdminPw() {
+  var pw = prompt('🔐 관리자 비밀번호를 입력하세요');
+  if (pw === null) return false;
+  if (pw !== ADMIN_PW) {
+    alert('❌ 비밀번호가 일치하지 않습니다');
+    return false;
+  }
+  return true;
+}
+
+function saveSnapshot() {
+  if (!checkAdminPw()) return;
+  if (!confirm('현재 순위를 이전 순위로 저장할까요?\n(이후 매출 변동 시 이 시점 대비 변동이 표시됩니다)')) return;
+  var ranks1 = calcRanks('1');
+  var ranks2 = calcRanks('2');
+  var combined = {};
+  for (var k in ranks1) combined['R1_' + k] = ranks1[k];
+  for (var k in ranks2) combined['R2_' + k] = ranks2[k];
+  prevRanks = combined;
+  var now = new Date();
+  snapshotTime = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  try {
+    localStorage.setItem('mc_snapshot_v1', JSON.stringify({ ranks: prevRanks, time: snapshotTime }));
+  } catch(e) {}
+  updateSnapInfo();
+  renderAll();
+  alert('✅ 현재 순위가 저장되었습니다.\n이후 변동은 이 시점 대비로 표시됩니다.');
+}
+
+function clearSnapshot() {
+  if (!checkAdminPw()) return;
+  if (!confirm('이전 순위 데이터를 초기화할까요?')) return;
+  prevRanks = {};
+  snapshotTime = '';
+  try { localStorage.removeItem('mc_snapshot_v1'); } catch(e) {}
+  updateSnapInfo();
+  renderAll();
+}
+
+function updateSnapInfo() {
+  var el = document.getElementById('snap-info');
+  if (el) {
+    if (snapshotTime) {
+      el.innerHTML = '<span style="color:#E65100;font-weight:700">📌 기준 시점:</span> ' + snapshotTime + ' <span style="color:#888">(이 시점 대비 변동 표시 중)</span>';
+    } else {
+      el.innerHTML = '<span style="color:#E65100;font-weight:700">⚠️ 기준 시점 미저장</span> <span style="color:#888">— 📸 버튼을 누르면 변동 표시 시작</span>';
+    }
+  }
+  // 상단 안내 배너도 갱신
+  var bn = document.getElementById('snap-banner');
+  if (bn) {
+    if (snapshotTime) {
+      bn.style.display = 'none';
+    } else {
+      bn.style.display = 'block';
+    }
+  }
+}
+
+function renderAll() {
+  renderRanking();
+  BRANCHES.forEach(function(b){ renderBranch(b); });
+  updateSnapInfo();
+}
+
+function onSalesBlur(el) {
+  var v = parseInt(el.value.split(',').join(''));
+  el.value = isNaN(v) ? '0' : v.toLocaleString();
+}
+
+function addEntry(b) {
+  var rnd = document.getElementById('fr-' + b).value;
+  var grp = document.getElementById('fg-' + b).value;
+  var rnk = document.getElementById('fk-' + b).value;
+  var nm = document.getElementById('fn-' + b).value.trim();
+  var sl = parseInt((document.getElementById('fs-' + b).value || '').split(',').join(''));
+  var nt = document.getElementById('fo-' + b).value.trim();
+  if (!rnd) { alert('차수 선택'); return; }
+  if (!grp) { alert('그룹 선택'); return; }
+  if (!rnk) { alert('직급 선택'); return; }
+  if (!nm) { alert('이름 입력'); return; }
+  if (isNaN(sl)) { alert('매출 입력'); return; }
+  var newEntry = { id: uid++, branch: b, round: rnd, group: grp, rank: rnk, name: nm, sales: sl, note: nt };
+  data.push(newEntry);
+  save();
+  syncAdd(newEntry);
+  document.getElementById('fn-' + b).value = '';
+  document.getElementById('fs-' + b).value = '';
+  document.getElementById('fo-' + b).value = '';
+  renderAll();
+}
+
+function updS(el) {
+  var id = parseInt(el.dataset.id);
+  var v = parseInt((el.value || '').split(',').join(''));
+  if (isNaN(v)) return;
+  var e = data.filter(function(d){ return d.id === id; })[0];
+  if (e) { e.sales = v; save(); syncUpdate(e); renderAll(); }
+}
+
+function updN(el) {
+  var id = parseInt(el.dataset.id);
+  var e = data.filter(function(d){ return d.id === id; })[0];
+  if (e) { e.note = el.value; save(); syncUpdate(e); }
+}
+
+function delE(el) {
+  if (!confirm('삭제할까요?')) return;
+  var id = parseInt(el.dataset.id);
+  data = data.filter(function(d){ return d.id !== id; });
+  save();
+  syncDelete(id);
+  renderAll();
+}
+
+function setRound(r) {
+  cRound = r;
+  document.getElementById('rt1').className = 'rt' + (r === '1' ? ' on' : '');
+  document.getElementById('rt2').className = 'rt' + (r === '2' ? ' on' : '');
+  renderAll();
+}
+
+function setGroup(g) {
+  cGroup = g;
+  ['ALL','A','B','C'].forEach(function(x){
+    var el = document.getElementById('gt-' + x);
+    if (!el) return;
+    var cls = 'gt';
+    if (x === g) cls += ' ' + (g === 'ALL' ? 'on' : 'on' + g);
+    el.className = cls;
+  });
+  renderRanking();
+}
+
+function gp(id) {
+  var pgs = document.querySelectorAll('.pg');
+  for (var i = 0; i < pgs.length; i++) pgs[i].classList.remove('on');
+  var nms = document.querySelectorAll('.nm');
+  for (var i = 0; i < nms.length; i++) nms[i].classList.remove('on');
+  var nbs = document.querySelectorAll('.nb');
+  for (var i = 0; i < nbs.length; i++) nbs[i].classList.remove('on');
+  var pg = document.getElementById('pg-' + id);
+  if (pg) pg.classList.add('on');
+  var nm = document.getElementById('nm-' + id);
+  if (nm) nm.classList.add('on');
+  var nb = document.getElementById('nb-' + id);
+  if (nb) nb.classList.add('on');
+}
+
+function oninputSales(el) {
+  el.value = el.value.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+renderAll();
+loadFromServer();
+
+</script>
+</body>
+</html>
