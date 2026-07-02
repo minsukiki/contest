@@ -216,6 +216,7 @@ body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo',Pr
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
     <span id="sync-status" style="font-size:11px;color:var(--sub);"></span>
+    <button class="btn-sync" onclick="document.getElementById('api-setup-bar').style.display='flex';document.getElementById('api-url-inp').value=API_URL;" title="Google 연동 설정">⚙️</button>
     <button class="btn-sync" id="btn-load" onclick="loadFromSheet()">☁️ 불러오기</button>
     <button class="btn-sync btn-sync-save" id="btn-save-sheet" onclick="saveToSheet()">💾 저장</button>
   </div>
@@ -943,6 +944,17 @@ function setBtnsLoading(on){
   document.getElementById('btn-load').textContent = on ? '⏳ 불러오는 중...' : '☁️ 불러오기';
 }
 
+function jsonp(url){
+  return new Promise((resolve,reject)=>{
+    const cb='jsonp_cb_'+Date.now();
+    const script=document.createElement('script');
+    window[cb]=function(data){resolve(data);delete window[cb];document.body.removeChild(script);};
+    script.onerror=()=>{reject(new Error('JSONP 오류'));delete window[cb];document.body.removeChild(script);};
+    script.src=url+(url.includes('?')?'&':'?')+'callback='+cb;
+    document.body.appendChild(script);
+  });
+}
+
 async function loadFromSheet(){
   if(!API_URL){
     document.getElementById('api-setup-bar').style.display='flex';
@@ -952,35 +964,32 @@ async function loadFromSheet(){
   setBtnsLoading(true);
   setSyncStatus('불러오는 중...');
   try{
-    const res = await fetch(API_URL+'?action=load');
-    const json = await res.json();
+    const json=await jsonp(API_URL+'?action=load');
     if(json.error) throw new Error(json.error);
 
-    // monthData 복원 (인덱스 기준)
-    const md = json.monthData || {};
-    Object.keys(md).forEach(mKey => {
-      const idx = parseInt(mKey);
-      if(isNaN(idx)) return;
-      monthData[idx] = md[mKey].map(p=>({...p, id:nid++}));
+    const md=json.monthData||{};
+    Object.keys(md).forEach(mKey=>{
+      const idx=parseInt(mKey);
+      if(isNaN(idx))return;
+      monthData[idx]=md[mKey].map(p=>({...p,id:nid++}));
     });
 
-    // 설정값 복원
-    const s = json.settings || {};
-    if(s.mainMonth !== undefined) mainMonth = parseInt(s.mainMonth)||0;
-    if(s.T) { try{ Object.assign(T, JSON.parse(s.T)); }catch(e){} }
-    if(s.W) { try{ Object.assign(W, JSON.parse(s.W)); }catch(e){} }
-    if(s.INC) { try{ Object.assign(INC, JSON.parse(s.INC)); }catch(e){} }
+    const s=json.settings||{};
+    if(s.mainMonth!==undefined) mainMonth=parseInt(s.mainMonth)||0;
+    if(s.T){try{Object.assign(T,JSON.parse(s.T));}catch(e){}}
+    if(s.W){try{Object.assign(W,JSON.parse(s.W));}catch(e){}}
+    if(s.INC){try{Object.assign(INC,JSON.parse(s.INC));}catch(e){}}
 
-    curMonth = mainMonth;
+    curMonth=mainMonth;
     initMonthData(curMonth);
     applySettings();
     renderMonthBar();
     renderInput();
     renderScore();
-    setSyncStatus('✅ ' + new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}) + ' 불러옴', 'var(--green)');
-  } catch(e){
-    setSyncStatus('❌ 불러오기 실패', 'var(--red)');
-    showToast('❌ 불러오기 실패: ' + e.message);
+    setSyncStatus('✅ '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+' 불러옴','var(--green)');
+  }catch(e){
+    setSyncStatus('❌ 불러오기 실패','var(--red)');
+    showToast('❌ 불러오기 실패: '+e.message);
   }
   setBtnsLoading(false);
 }
@@ -991,31 +1000,25 @@ async function saveToSheet(){
     document.getElementById('api-url-inp').focus();
     return;
   }
-  monthData[curMonth] = ppl;
-  const btn = document.getElementById('btn-save-sheet');
-  btn.disabled = true; btn.textContent = '⏳ 저장 중...';
+  monthData[curMonth]=ppl;
+  const btn=document.getElementById('btn-save-sheet');
+  btn.disabled=true;btn.textContent='⏳ 저장 중...';
   setSyncStatus('저장 중...');
   try{
-    const payload = {
-      action: 'save',
-      monthData: monthData,
-      settings: {
-        mainMonth: mainMonth,
-        T: JSON.stringify(T),
-        W: JSON.stringify(W),
-        INC: JSON.stringify(INC),
-      }
+    const payload={
+      action:'save',
+      monthData:monthData,
+      settings:{mainMonth:mainMonth,T:JSON.stringify(T),W:JSON.stringify(W),INC:JSON.stringify(INC)}
     };
-    const res = await fetch(API_URL, {method:'POST', body:JSON.stringify(payload)});
-    const json = await res.json();
-    if(!json.ok) throw new Error('서버 오류');
-    setSyncStatus('✅ ' + new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}) + ' 저장됨', 'var(--green)');
+    const json=await jsonp(API_URL+'?action=save&data='+encodeURIComponent(JSON.stringify(payload)));
+    if(!json.ok) throw new Error(json.error||'서버 오류');
+    setSyncStatus('✅ '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+' 저장됨','var(--green)');
     showToast('✅ Google 스프레드시트에 저장되었습니다');
-  } catch(e){
-    setSyncStatus('❌ 저장 실패', 'var(--red)');
-    showToast('❌ 저장 실패: ' + e.message);
+  }catch(e){
+    setSyncStatus('❌ 저장 실패','var(--red)');
+    showToast('❌ 저장 실패: '+e.message);
   }
-  btn.disabled = false; btn.textContent = '💾 저장';
+  btn.disabled=false;btn.textContent='💾 저장';
 }
 
 function applySettings(){
