@@ -948,9 +948,27 @@ function jsonp(url){
   return new Promise((resolve,reject)=>{
     const cb='jsonp_cb_'+Date.now();
     const script=document.createElement('script');
-    window[cb]=function(data){resolve(data);delete window[cb];document.body.removeChild(script);};
-    script.onerror=()=>{reject(new Error('JSONP 오류'));delete window[cb];document.body.removeChild(script);};
-    script.src=url+(url.includes('?')?'&':'?')+'callback='+cb;
+    let done=false;
+    window[cb]=function(data){
+      if(done)return;done=true;
+      resolve(data);
+      delete window[cb];
+      if(script.parentNode)document.body.removeChild(script);
+    };
+    script.onerror=()=>{
+      if(done)return;done=true;
+      reject(new Error('JSONP 오류'));
+      delete window[cb];
+      if(script.parentNode)document.body.removeChild(script);
+    };
+    // 타임아웃 10초
+    setTimeout(()=>{
+      if(done)return;done=true;
+      reject(new Error('응답 시간 초과'));
+      delete window[cb];
+      if(script.parentNode)document.body.removeChild(script);
+    },10000);
+    script.src=url+(url.includes('?')?'&':'?')+'callback='+cb+'&t='+Date.now();
     document.body.appendChild(script);
   });
 }
@@ -989,7 +1007,8 @@ async function loadFromSheet(){
     setSyncStatus('✅ '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+' 불러옴','var(--green)');
   }catch(e){
     setSyncStatus('❌ 불러오기 실패','var(--red)');
-    showToast('❌ 불러오기 실패: '+e.message);
+    showToast('❌ '+e.message);
+    console.error('loadFromSheet error:', e);
   }
   setBtnsLoading(false);
 }
